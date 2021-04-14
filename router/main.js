@@ -13,34 +13,31 @@ module.exports = function(app){
 
     /// Router Module ///
 
-    // 일반 로그인 아이디 체크
-    /*const ArknightsLogin = function(req, res){
-        const sql = 'SELECT * FROM userdata WHERE user_email=? AND password=?';
-        const params = [req.query.email, req.query.password];
+    const SoldierList = function(req, res){
+        const sql = 'SELECT * FROM soldier WHERE fk_user_id=?';
+        const params = [req.query.userId];
         
-        console.log('Request[Check] : ' + req.query.email);
-        CheckArknightsLoginData(res, sql, params);
+        console.log('Request[Check] : ' + req.query.userId);
+        SendSoldierList(res, sql, params);
     }
-
+    
     /// Send Module ///
 
-    const CheckArknightsLoginData = function(res, sql, params){
+    const SendSoldierList = function(res, sql, params){
         con.query(sql, params, function (error, results, fields) {
             if(results == ''){
                 console.log('Result[Check] : fail');
-                res.send('check_fail');
+                res.send('fail');
             }
             else{     
                 console.log('Result[Check] : success');
-                let id = "";
-                id += results[0].user_id;
-                res.send(id);
+                console.log(results);
+                res.send(results);
             }
         });
     }
-    
-    */
-    /// GET, POST ///
 
-    //app.get('/CheckArknightsEmail', ArknightsLogin);
+    /// GET, POST ///
+    
+    app.get('/SoldierList', SoldierList);
 }
