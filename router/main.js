@@ -17,10 +17,26 @@ module.exports = function(app){
         const sql = 'SELECT * FROM soldier WHERE fk_user_id=?';
         const params = [req.query.userId];
         
-        console.log('Request[Check] : ' + req.query.userId);
+        console.log('Request[SoldierList] : ' + req.query.userId);
         SendSoldierList(res, sql, params);
     }
     
+    const UpdateTeam = function(req, res){
+        const sql = 'UPDATE soldier SET team=? WHERE soldier_id=? AND fk_user_id=?';
+        const params = [req.query.isTeam, req.query.soldierId, req.query.userId];
+
+        con.query(sql, params, function (error, results, fields){
+            if(error){
+                console.log(error);
+                res.send('fail');
+            }
+            else{     
+                console.log('Request[UpdateTeam] : ' + req.query.userId);
+                res.send('success');
+            }
+        });
+    }
+
     /// Send Module ///
 
     const SendSoldierList = function(res, sql, params){
@@ -40,4 +56,5 @@ module.exports = function(app){
     /// GET, POST ///
     
     app.get('/SoldierList', SoldierList);
+    app.get('/UpdateTeam', UpdateTeam);
 }
