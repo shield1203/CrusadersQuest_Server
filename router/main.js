@@ -34,7 +34,15 @@ module.exports = function(app){
         const params = [req.query.isTeam, req.query.soldierId, req.query.userId];
 
         console.log('Request[UpdateTeam] : ' + req.query.userId);
-        SendUpdateTeamResult(res, sql, params);
+        SendUpdateResult(res, sql, params);
+    }
+
+    const UpdateUserExp = function(req, res){
+        const sql = 'UPDATE user SET lv=?, exp=? WHERE user_id=?';
+        const params = [req.query.lv, req.query.exp, req.query.userId];
+
+        console.log('Request[UpdateUserExp] : ' + req.query.userId);
+        SendUpdateResult(res, sql, params);
     }
 
     /// Send Module ///
@@ -65,14 +73,14 @@ module.exports = function(app){
         });
     }
 
-    const SendUpdateTeamResult = function(res, sql, params){
+    const SendUpdateResult = function(res, sql, params){
         con.query(sql, params, function (error, results, fields){
             if(error){
                 console.log(error);
                 res.send('fail');
             }
             else{     
-                console.log('Result[UpdateTeam] : success');
+                console.log('Result[UpdateResult] : success');
                 res.send('success');
             }
         });
@@ -83,4 +91,5 @@ module.exports = function(app){
     app.get('/UserData', UserData);
     app.get('/SoldierList', SoldierList);
     app.get('/UpdateTeam', UpdateTeam);
+    app.get('/UpdateUserExp', UpdateUserExp);
 }
