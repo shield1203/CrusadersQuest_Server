@@ -45,6 +45,14 @@ module.exports = function(app){
         SendUpdateResult(res, sql, params);
     }
 
+    const UpdateSoldierExp = function(req, res){
+        const sql = 'UPDATE soldier SET level=?, exp=? WHERE soldier_id=? AND fk_user_id=?';
+        const params = [req.query.lv, req.query.exp, req.query.soldierId, req.query.userId];
+
+        console.log('Request[UpdateSoldierExp] : ' + req.query.userId);
+        SendUpdateResult(res, sql, params);
+    }
+
     /// Send Module ///
     
     const SendUserData = function(res, sql, params){
@@ -92,4 +100,5 @@ module.exports = function(app){
     app.get('/SoldierList', SoldierList);
     app.get('/UpdateTeam', UpdateTeam);
     app.get('/UpdateUserExp', UpdateUserExp);
+    app.get('/UpdateSoldierExp', UpdateSoldierExp);
 }
