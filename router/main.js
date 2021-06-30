@@ -45,6 +45,14 @@ module.exports = function(app){
         SendUserData(res, sql, params);
     }
 
+    const UpdateName = function(req, res){
+        const sql = 'UPDATE user SET name=? WHERE user_id=?';
+        const params = [req.query.name, req.query.userId];
+
+        console.log('Request[UpdateName] : ' + req.query.userId);
+        SendUpdateResult(res, sql, params);
+    }
+
     const SoldierList = function(req, res){
         const sql = 'SELECT * FROM soldier WHERE fk_user_id=?';
         const params = [req.query.userId];
@@ -150,6 +158,8 @@ module.exports = function(app){
     
     app.get('/SignInGuest', SignInGuest);
     app.get('/UserData', UserData);
+    app.get('/UpdateName', UpdateName);
+    app.get('/AddSoldier', AddSoldier);
     app.get('/SoldierList', SoldierList);
     app.get('/UpdateTeam', UpdateTeam);
     app.get('/UpdateUserExp', UpdateUserExp);
