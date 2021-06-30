@@ -53,6 +53,14 @@ module.exports = function(app){
         SendUpdateResult(res, sql, params);
     }
 
+    const RecruitSoldier = function(req, res){
+        const sql = 'INSERT INTO soldier (fk_user_id, code) VALUES(?, ?)';
+        const params = [req.query.userId, req.query.userId];
+
+        console.log('Request[RecruitSoldier] : ' + req.query.userId);
+        SendUpdateResult(res, sql, params);
+    };
+
     const SoldierList = function(req, res){
         const sql = 'SELECT * FROM soldier WHERE fk_user_id=?';
         const params = [req.query.userId];
@@ -85,6 +93,19 @@ module.exports = function(app){
         SendUpdateResult(res, sql, params);
     }
 
+    /// SQL ///
+    const InsertSoldier = function(sql, params)
+    {
+        con.query(sql, params, function (error, results, fields) {
+            if(error){
+                console.log('Result[Recruit] : fail');
+            }
+            else{     
+                console.log('Result[Recruit] : success');
+            }
+        });
+    }
+
     /// Send Module ///
     
     const SignIn = function(res, sql, params, key){
@@ -111,6 +132,15 @@ module.exports = function(app){
                 var id = '';
                 id += results[0].user_id;
                 res.send(id);
+
+                var code;
+                for(code = 0; code < 20; code++)
+                {
+                    const sql1 = 'INSERT INTO soldier (fk_user_id, code) VALUES(?, ?)';
+                    const params1 = [id, code];
+                    
+                    InsertSoldier(sql1, params1);
+                }
             }
         });
     }
@@ -159,7 +189,7 @@ module.exports = function(app){
     app.get('/SignInGuest', SignInGuest);
     app.get('/UserData', UserData);
     app.get('/UpdateName', UpdateName);
-    app.get('/AddSoldier', AddSoldier);
+    app.get('/RecruitSoldier', RecruitSoldier);
     app.get('/SoldierList', SoldierList);
     app.get('/UpdateTeam', UpdateTeam);
     app.get('/UpdateUserExp', UpdateUserExp);
